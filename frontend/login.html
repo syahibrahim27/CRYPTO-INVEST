@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Login — Crypto Invest</title>
+<link rel="stylesheet" href="css/styles.css"/>
+</head>
+<body>
+<div class="container">
+<div class="auth-wrap card">
+<div class="brand" style="font-size:28px">Login</div>
+<div style="margin-top:12px" class="grid">
+<input id="username" class="input" placeholder="Username"/>
+<input id="password" type="password" class="input" placeholder="Password"/>
+<button id="login" type="button" class="btn btn-primary">Masuk</button>
+<div class="subtitle">Belum punya akun? <a class="link" href="register.html">Register</a></div>
+</div>
+</div>
+</div>
+
+
+<!-- Navbar -->
+<nav class="navbar"><div class="wrap">
+<a href="index.html"><span>Home</span><span class="dot"></span></a>
+<a href="shop.html"><span>Toko</span><span class="dot"></span></a>
+<a href="my-products.html"><span>Produk</span><span class="dot"></span></a>
+<a href="team.html"><span>Team</span><span class="dot"></span></a>
+<a href="account.html"><span>Akun</span><span class="dot"></span></a>
+</div></nav>
+
+
+<script type="module">
+import { setActiveNav, doLogin } from './js/app.js';
+setActiveNav();
+document.getElementById('login').onclick = doLogin;
+</script>
+</body>
+</html>

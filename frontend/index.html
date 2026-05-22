@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Crypto Invest — Home</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <div class="container home">
+    <!-- Header -->
+    <header class="header">
+      <div class="brand">Crypto Invest</div>
+      <div class="right-actions">
+        <a id="btnLoginHeader" href="login.html" class="btn">Login</a>
+        <a id="btnRegisterHeader" href="register.html" class="btn btn-primary">Register</a>
+        <button id="btnLogoutHeader" class="btn hidden">Logout</button>
+      </div>
+    </header>
+
+    <!-- Welcome -->
+    <section class="welcome">
+      <h2 id="welcomeText">Hello, Investor 👋</h2>
+      <p class="subtitle">
+        Mulai investasi crypto Anda dengan paket pilihan, ROI jelas, dan kontrol saldo mudah.
+      </p>
+    </section>
+
+    <!-- Hero (image + balance) -->
+    <section class="hero">
+      <img
+        src="assets/coins.jpg"
+        alt="Koin kripto"
+        class="hero-img"
+        onerror="this.src='https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?q=80&w=1200&auto=format&fit=crop';"
+      />
+     <!-- Info Saldo -->
+<section class="card" style="min-width:320px">
+  <div class="kv">
+    <div class="title">Info Saldo</div>
+    <div id="homeStatus" class="subtitle"></div>
+  </div>
+
+  <div style="margin-top:12px">
+    <div class="subtitle">Total Saldo</div>
+    <div id="homeBalanceTotal" class="title" style="font-size:28px">Rp 0</div>
+  </div>
+
+  <div class="grid grid-2" style="margin-top:12px">
+    <div class="card" style="background:#0f1621">
+      <div class="subtitle">Saldo Deposit</div>
+      <div id="homeBalanceDep" class="title">Rp 0</div>
+    </div>
+    <div class="card" style="background:#0f1621">
+      <div class="subtitle">Saldo Dapat Ditarik</div>
+      <div id="homeBalanceWd" class="title">Rp 0</div>
+    </div>
+  </div>
+
+  <div style="margin-top:12px; display:flex; gap:8px">
+    <a href="deposit.html" class="btn btn-primary">Deposit</a>
+    <a href="withdraw.html" class="btn">Withdraw</a>
+  </div>
+</section>
+
+    </section>
+
+    <!-- News / Updates -->
+    <section class="news-section">
+      <h3>Berita & Update</h3>
+      <div id="newsList" class="news-list"></div>
+      <div id="newsExternal" class="grid" style="margin-top:12px"></div>
+      
+        <!-- Diisi via JS dari /api/admin/announce -->
+      </div>
+    </section>
+  </div>
+
+  <!-- Bottom Navbar -->
+  <nav class="navbar">
+    <div class="wrap">
+      <a href="index.html" class="active"><span>Home</span><span class="dot"></span></a>
+      <a href="shop.html"><span>Toko</span><span class="dot"></span></a>
+      <a href="my-products.html"><span>Produk</span><span class="dot"></span></a>
+      <a href="team.html"><span>Team</span><span class="dot"></span></a>
+      <a href="account.html"><span>Akun</span><span class="dot"></span></a>
+    </div>
+  </nav>
+
+  <!-- Popup Pengumuman -->
+  <div id="announceModal" class="modal">
+    <div class="box">
+      <div class="kv">
+        <div class="title" id="annTitle">Pengumuman</div>
+        <button class="btn" id="annClose" type="button">Tutup</button>
+      </div>
+      <img id="annImg" class="pimg" style="margin-top:8px; display:none" alt="Announcement"/>
+      <p id="annText" class="subtitle" style="margin-top:10px"></p>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script type="module">
+  import {
+    setActiveNav,
+    showIfLogged,
+    setWelcomeText,
+    loadNews,
+    loadBalance,
+    loadExternalNews,
+    loadHomeBalances
+    
+  } from './js/app.js'; // ✅ tambahkan loadHomeBalances di sini
+
+  // Jalankan fungsi dasar saat halaman dimuat
+  document.addEventListener('DOMContentLoaded', () => {
+    setActiveNav();
+    showIfLogged();
+    setWelcomeText();
+    loadNews();
+    loadBalance();
+    loadHomeBalances(); // ✅ Sekarang sudah terdefinisi
+    loadActiveAnnouncement();
+  loadExternalNews(); 
+  });
+
+  // — Popup pengumuman aktif —
+  const API = 'http://localhost:5000/api';
+  const token = localStorage.getItem('token');
+
+  async function loadActiveAnnouncement() {
+    try {
+      const r = await fetch(`${API}/announce/active`, {
+        headers: token ? { Authorization: 'Bearer ' + token } : {}
+      });
+      const a = await r.json();
+      if (!a) return;
+
+      const modal = document.getElementById('announceModal');
+      const img = document.getElementById('annImg');
+      document.getElementById('annTitle').textContent = a.title || 'Pengumuman';
+      document.getElementById('annText').textContent = a.text || '';
+
+      if (a.imageUrl) {
+        img.src = a.imageUrl;
+        img.style.display = 'block';
+      } else {
+        img.style.display = 'none';
+      }
+
+      modal.classList.add('show');
+      document.getElementById('annClose').onclick = () =>
+        modal.classList.remove('show');
+      modal.addEventListener('click', e => {
+        if (e.target === modal) modal.classList.remove('show');
+      });
+    } catch (err) {
+      console.error('Gagal memuat popup pengumuman:', err);
+    }
+  }
+
+  // Tombol logout
+  document.getElementById('btnLogoutHeader')?.addEventListener('click', () => {
+    localStorage.clear();
+    location.href = 'login.html';
+  });
+</script>
+
+</body>
+</html>

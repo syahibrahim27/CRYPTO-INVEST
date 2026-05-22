@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Crypto Invest — Produk Saya</title>
+<link rel="stylesheet" href="css/styles.css"/>
+</head>
+<body>
+<div class="container">
+<header class="header"><div class="brand">Produk Saya</div></header>
+<section class="grid" style="margin-top:16px">
+<div id="myProducts" class="grid"></div>
+</section>
+</div>
+
+
+<!-- Navbar -->
+<nav class="navbar"><div class="wrap">
+<a href="index.html"><span>Home</span><span class="dot"></span></a>
+<a href="shop.html"><span>Toko</span><span class="dot"></span></a>
+<a href="my-products.html"><span>Produk</span><span class="dot"></span></a>
+<a href="team.html"><span>Team</span><span class="dot"></span></a>
+<a href="account.html"><span>Akun</span><span class="dot"></span></a>
+</div></nav>
+
+
+<script type="module">
+import { setActiveNav, loadMyProducts } from './js/app.js';
+setActiveNav();
+loadMyProducts();
+</script>
+</body>
+</html>

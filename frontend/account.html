@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Crypto Invest — Akun</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    .action-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 14px;
+      justify-content: center;
+    }
+    .action-buttons button, .action-buttons a {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      background: #101820;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      font-size: 15px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    .action-buttons a:hover {
+      background: linear-gradient(90deg,#0f0,#0ff);
+      color: #000;
+    }
+    .icon {
+      width: 22px;
+      height: 22px;
+    }
+    .centered {
+      text-align: center;
+      margin-top: 8px;
+      font-size: 15px;
+      color: #ccc;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="brand">Crypto Invest</div>
+      <div class="right-actions">
+        <button id="btnLogoutHeader" class="btn" type="button">Logout</button>
+      </div>
+    </header>
+
+    <!-- Akun -->
+    <section class="card">
+      <div class="title">Akun</div>
+     <div id="meInfo">
+  <div class="title">Saldo Akun</div>
+  <div class="subtitle">Saldo Deposit: <b id="saldoDeposit">Rp0</b></div>
+  <div class="subtitle">Saldo Dapat Ditarik: <b id="saldoWithdraw">Rp0</b></div>
+</div>
+
+      <div class="action-buttons">
+        <a href="deposit.html">
+          <img src="https://cdn-icons-png.flaticon.com/512/992/992651.png" class="icon"> Deposit
+        </a>
+        <a href="withdraw.html">
+          <img src="https://cdn-icons-png.flaticon.com/512/992/992660.png" class="icon"> Withdraw
+        </a>
+      </div>
+    </section>
+
+    <section class="card" id="historyPreview">
+  <div class="title">Riwayat Transaksi</div>
+  <div id="recentHistory" class="subtitle"></div>
+  <button class="btn" onclick="location.href='history.html'">Lihat Semua</button>
+</section>
+
+
+    <!-- Rekening -->
+    <section class="card">
+      <div class="kv">
+        <div class="title">Rekening Saya</div>
+        <div>
+          <button id="bankEditBtn" class="btn" type="button">Edit</button>
+          <button id="bankCancelBtn" class="btn hidden" type="button">Batal</button>
+        </div>
+      </div>
+
+      <div id="bankView" class="grid" style="margin-top:10px"></div>
+
+      <form id="bankForm" class="grid hidden" style="margin-top:12px">
+        <input id="bankName" class="input" placeholder="Nama Bank (contoh: BRI)">
+        <input id="bankAcc" class="input" placeholder="No Rekening">
+        <input id="bankHolder" class="input" placeholder="Atas Nama">
+        <div class="full" style="display:flex;gap:8px">
+          <button id="bankSaveBtn" class="btn btn-primary" type="submit">Simpan</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Kontak & Bantuan -->
+    <section class="card">
+      <div class="title">Hubungi Admin</div>
+      <div class="action-buttons">
+        <a href="https://wa.me/6281234567890" target="_blank">
+          <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" class="icon"> WhatsApp
+        </a>
+        <a href="https://t.me/cryptoinvestgrup" target="_blank">
+          <img src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png" class="icon"> Telegram
+        </a>
+      </div>
+      <div class="centered">Chat admin atau bergabung di grup komunitas kami.</div>
+    </section>
+
+    <!-- Tentang -->
+    <section class="card">
+      <div class="title">Tentang Perusahaan</div>
+      <div class="centered">
+        <a href="about.html" class="btn btn-primary">Lihat Detail</a>
+      </div>
+    </section>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="wrap">
+      <a href="index.html"><span>Home</span><span class="dot"></span></a>
+      <a href="shop.html"><span>Toko</span><span class="dot"></span></a>
+      <a href="my-products.html"><span>Produk</span><span class="dot"></span></a>
+      <a href="team.html"><span>Team</span><span class="dot"></span></a>
+      <a href="account.html" class="active"><span>Akun</span><span class="dot"></span></a>
+    </div>
+  </nav>
+
+  <script type="module">
+    import { setActiveNav, loadAccount, toggleBankEdit, saveBank } from './js/app.js';
+
+    setActiveNav();
+    loadAccount();
+
+    const editBtn = document.getElementById('bankEditBtn');
+    const cancelBtn = document.getElementById('bankCancelBtn');
+    const form = document.getElementById('bankForm');
+
+    editBtn.addEventListener('click', () => {
+      toggleBankEdit(true);
+      editBtn.classList.add('hidden');
+      cancelBtn.classList.remove('hidden');
+    });
+    cancelBtn.addEventListener('click', () => {
+      toggleBankEdit(false);
+      cancelBtn.classList.add('hidden');
+      editBtn.classList.remove('hidden');
+    });
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      await saveBank();
+      cancelBtn.classList.add('hidden');
+      editBtn.classList.remove('hidden');
+    });
+
+    document.getElementById('btnLogoutHeader').addEventListener('click', () => {
+      localStorage.clear();
+      location.href = 'login.html';
+    });
+  </script>
+</body>
+</html>

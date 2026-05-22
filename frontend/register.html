@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Register — Crypto Invest</title>
+<link rel="stylesheet" href="css/styles.css"/>
+</head>
+<body>
+<div class="container">
+  <div class="auth-wrap card">
+    <div class="brand" style="font-size:28px">Register</div>
+    <div style="margin-top:12px" class="grid">
+      <input id="username" class="input" placeholder="Username"/>
+      <input id="phone" class="input" placeholder="No HP (628xxxx)"/>
+      <input id="password" type="password" class="input" placeholder="Password"/>
+      <input id="confirm" type="password" class="input" placeholder="Ulangi Password"/>
+      <input id="ref" class="input" placeholder="Kode Reff (opsional)"/>
+
+      <!-- CAPTCHA -->
+      <div class="grid grid-2" style="align-items:center">
+        <div>
+          <img id="captchaImg" alt="captcha" style="height:64px;border-radius:10px;border:1px solid var(--border)">
+          <button type="button" class="btn" id="btnRefreshCaptcha" style="margin-left:8px">Reload</button>
+        </div>
+        <input id="captchaAnswer" class="input" placeholder="Masukkan teks di atas" autocomplete="off">
+      </div>
+      <!-- /CAPTCHA -->
+
+      <button id="register" type="button" class="btn btn-primary">Daftar</button>
+      <div class="subtitle">Sudah punya akun? <a class="link" href="login.html">Masuk</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- Navbar -->
+<nav class="navbar">
+  <div class="wrap">
+    <a href="index.html"><span>Home</span><span class="dot"></span></a>
+    <a href="shop.html"><span>Toko</span><span class="dot"></span></a>
+    <a href="my-products.html"><span>Produk</span><span class="dot"></span></a>
+    <a href="team.html"><span>Team</span><span class="dot"></span></a>
+    <a href="account.html"><span>Akun</span><span class="dot"></span></a>
+  </div>
+</nav>
+
+<!-- Script -->
+<script type="module">
+  import { setActiveNav } from './js/app.js';
+  import { doRegister, loadCaptcha } from './js/app.js';
+
+  setActiveNav();
+  loadCaptcha();
+
+  // Jika URL punya ref code, isi otomatis
+  const ref = new URLSearchParams(location.search).get('ref');
+  if (ref) document.getElementById('ref').value = ref;
+
+  // Event
+  document.getElementById('btnRefreshCaptcha').addEventListener('click', loadCaptcha);
+  document.getElementById('register').onclick = doRegister;
+</script>
+
+</body>
+</html>

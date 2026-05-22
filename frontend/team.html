@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Crypto Invest — Team</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    .copy-wrap{display:flex;gap:8px;align-items:center}
+    .copy-wrap input{flex:1}
+    .pill{display:inline-block;padding:6px 10px;border:1px solid var(--border);
+          border-radius:999px;background:#0f1621;color:#dfe7f3;font-weight:700}
+    .levels{display:grid;gap:12px}
+    @media(min-width:800px){.levels{grid-template-columns:repeat(3,1fr)}}
+    .mini{font-size:12px;color:#9fb1c7}
+    .kpi{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px}
+    .kpi .card{flex:1;min-width:180px}
+    .list ul{margin:6px 0 0 18px}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="brand">Crypto Invest</div>
+    </header>
+
+    <section class="card">
+      <div class="title">Referral Saya</div>
+      <div class="mini">Bagikan link ini untuk mengundang teman.</div>
+      <div class="copy-wrap" style="margin-top:8px">
+        <input id="refLink" class="input" readonly>
+        <button id="btnCopy" class="btn">Copy</button>
+      </div>
+      <div class="kpi">
+        <div class="card">
+          <div class="title">Total Anggota</div>
+          <div id="kTotal" class="price">0</div>
+        </div>
+        <div class="card">
+          <div class="title">Level 1</div>
+          <div id="kL1" class="price">0</div>
+          <div class="mini">Bonus: Deposit <b>5%</b> • Profit harian <b>10%</b></div>
+        </div>
+        <div class="card">
+          <div class="title">Level 2</div>
+          <div id="kL2" class="price">0</div>
+          <div class="mini">Bonus: Profit harian <b>6%</b></div>
+        </div>
+        <div class="card">
+          <div class="title">Level 3</div>
+          <div id="kL3" class="price">0</div>
+          <div class="mini">Bonus: Profit harian <b>3%</b></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="levels">
+      <div class="card list">
+        <div class="title">Level 1</div>
+        <ul id="L1"></ul>
+      </div>
+      <div class="card list">
+        <div class="title">Level 2</div>
+        <ul id="L2"></ul>
+      </div>
+      <div class="card list">
+        <div class="title">Level 3</div>
+        <ul id="L3"></ul>
+      </div>
+    </section>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="wrap">
+      <a href="index.html"><span>Home</span><span class="dot"></span></a>
+      <a href="shop.html"><span>Toko</span><span class="dot"></span></a>
+      <a href="my-products.html"><span>Produk</span><span class="dot"></span></a>
+      <a class="active" href="team.html"><span>Team</span><span class="dot"></span></a>
+      <a href="account.html"><span>Akun</span><span class="dot"></span></a>
+    </div>
+  </nav>
+
+  <script type="module">
+    import { setActiveNav, token, API, headers } from './js/app.js';
+
+    setActiveNav();
+    if (!token()) location.href = 'login.html';
+
+    async function loadTeam() {
+      const r = await fetch(`${API}/team/me`, { headers: headers() });
+      const d = await r.json();
+
+      // siapkan referral link ke frontend register
+      const link = d.referralLink;
+      document.getElementById('refLink').value = link;
+
+      document.getElementById('kTotal').textContent = d.counts.total;
+      document.getElementById('kL1').textContent = d.counts.level1;
+      document.getElementById('kL2').textContent = d.counts.level2;
+      document.getElementById('kL3').textContent = d.counts.level3;
+
+      const fmt = (arr) => (arr.length
+        ? arr.map(u => `<li>@${u.username}</li>`).join('')
+        : '<li class="mini">Belum ada</li>'
+      );
+
+      document.getElementById('L1').innerHTML = fmt(d.levels.L1 || []);
+      document.getElementById('L2').innerHTML = fmt(d.levels.L2 || []);
+      document.getElementById('L3').innerHTML = fmt(d.levels.L3 || []);
+    }
+
+    document.getElementById('btnCopy').onclick = async () => {
+      const v = document.getElementById('refLink').value;
+      await navigator.clipboard.writeText(v);
+      alert('Link referral disalin!');
+    };
+
+    loadTeam();
+  </script>
+</body>
+</html>

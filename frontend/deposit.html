@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Crypto Invest — Deposit</title>
+  <link rel="stylesheet" href="css/styles.css"/>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="brand">Deposit</div>
+      <a class="btn" href="account.html">Kembali</a>
+    </header>
+
+    <section class="grid" style="margin-top:16px">
+      <!-- Nominal -->
+      <div class="card">
+        <div class="title">Nominal Deposit</div>
+        <input id="depAmount" class="input" placeholder="Contoh: 100000" inputmode="numeric"/>
+        <div class="hint" style="margin-top:6px">Minimal Rp 10.000</div>
+      </div>
+
+      <!-- Metode -->
+      <div class="card">
+        <div class="title">Pilih Metode</div>
+        <div class="choice" style="margin-top:8px">
+          <div class="chip" data-method="qris">QRIS</div>
+          <div class="chip" data-method="permata">Bank Permata</div>
+        </div>
+
+        <!-- QRIS -->
+        <div id="secQRIS" class="card" style="margin-top:12px">
+          <div class="title">QRIS</div>
+          <p class="subtitle">
+            Setelah klik <b>Buat Deposit</b>, permintaan Anda tercatat.
+            Lanjutkan dengan scan QR di aplikasi pembayaran (Dana/OVO/Gopay/Bank).
+          </p>
+          <p class="hint">*QR akan ditampilkan/diarahkan sesuai implementasi backend Anda.</p>
+        </div>
+
+        <!-- Bank Permata -->
+        <div id="secPermata" class="card hidden" style="margin-top:12px">
+          <div class="title">Transfer Bank Permata</div>
+          <p class="subtitle">Langkah transfer:</p>
+          <ol class="subtitle">
+            <li>Buka m-banking/ATM dan pilih <b>Transfer ke Virtual Account</b> Permata.</li>
+            <li>Masukkan VA: <b>8981234567890</b> a.n. <b>PT Aurora Nebula Investindo</b>.</li>
+            <li>Masukkan nominal sesuai isian di atas, lalu konfirmasi.</li>
+            <li>Selesai. Dana akan tercatat otomatis/oleh admin sesuai konfigurasi backend.</li>
+          </ol>
+        </div>
+
+        <!-- Aksi -->
+        <div class="choice" style="margin-top:12px">
+          <button id="btnCreateDeposit" class="btn btn-primary" type="button">Buat Deposit</button>
+          <a class="btn" href="account.html">Batal</a>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Navbar bawah -->
+  <nav class="navbar">
+    <div class="wrap">
+      <a href="index.html"><span>Home</span><span class="dot"></span></a>
+      <a href="shop.html"><span>Toko</span><span class="dot"></span></a>
+      <a href="my-products.html"><span>Produk</span><span class="dot"></span></a>
+      <a href="team.html"><span>Team</span><span class="dot"></span></a>
+      <a href="account.html"><span>Akun</span><span class="dot"></span></a>
+    </div>
+  </nav>
+
+  <script type="module">
+    import { setActiveNav, initDepositPage, submitDeposit } from './js/app.js';
+    setActiveNav();
+    initDepositPage();
+    document.getElementById('btnCreateDeposit').onclick = submitDeposit;
+  </script>
+</body>
+</html>

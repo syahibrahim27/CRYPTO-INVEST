@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Admin Panel — Crypto Invest</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+  <style>
+    body{padding-bottom:40px}
+    .admin-header{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid var(--border);background:rgba(0,0,0,.2)}
+    .tabs{display:flex;gap:8px;flex-wrap:wrap;padding:12px 16px;border-bottom:1px solid var(--border);background:rgba(0,0,0,.15)}
+    .tabs button{padding:10px 14px;border:1px solid var(--border);background:#0f1621;color:#e6eef7;border-radius:10px;cursor:pointer}
+    .tabs button.active{background:linear-gradient(90deg,var(--aurora),var(--violet));color:#071013;font-weight:800;border:none}
+    .tab{display:none;padding:16px}
+    .tab.active{display:block}
+    .row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px;border-bottom:1px solid var(--border)}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .full{grid-column:1/-1}
+    .table{border:1px solid var(--border);border-radius:12px;overflow:hidden;background:var(--glass)}
+    .thumb{width:80px;height:60px;object-fit:cover;border-radius:8px}
+    .muted{opacity:.8}
+  </style>
+</head>
+<body>
+  <header class="admin-header">
+    <div class="brand">Crypto Invest — Admin</div>
+    <div>
+      <span id="adminName" class="subtitle"></span>
+      <button id="logout" class="btn" type="button">Logout</button>
+    </div>
+  </header>
+
+  <nav class="tabs">
+    <button class="active" data-tab="deposits">Deposit/Withdraw</button>
+    <button data-tab="products">Produk</button>
+    <button data-tab="users">Pengguna</button>
+    <button data-tab="announce">Pengumuman</button>
+  </nav>
+
+  <main class="container">
+    <!-- Deposits / Withdraws -->
+    <section id="deposits" class="tab active">
+      <div class="grid">
+        <div class="card">
+          <div class="title">Deposit Pending</div>
+          <div id="depositList" class="table"></div>
+        </div>
+        <div class="card">
+          <div class="title">Withdraw Pending</div>
+          <div id="withdrawList" class="table"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Produk -->
+    <section id="products" class="tab">
+      <div class="grid">
+        <div class="card">
+          <div class="title">Daftar Produk</div>
+          <div id="productList" class="table"></div>
+        </div>
+
+        <div class="card">
+          <div class="title">Tambah / Edit Produk</div>
+          <form id="productForm" class="form-grid">
+            <input id="pId" type="hidden" />
+            <input id="pName" class="input full" placeholder="Nama produk" />
+            <input id="pPrice" class="input" placeholder="Harga (Rp)" type="number" min="0" />
+            <input id="pDur" class="input" placeholder="Durasi (hari)" type="number" min="1" />
+            <input id="pRoi" class="input" placeholder="ROI (%)" type="number" min="0" />
+            <input id="pImg" class="input" placeholder="Image URL (Cloudinary)" />
+            <input id="pImgFile" class="input" type="file" accept="image/*" />
+            <textarea id="pDesc" class="input full" placeholder="Deskripsi"></textarea>
+            <div class="full" style="display:flex;gap:8px">
+              <button class="btn btn-primary" type="submit">Simpan</button>
+              <button class="btn" type="button" id="resetProduct">Reset</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pengguna -->
+    
+    <section id="users" class="tab">
+      <div class="card">
+        <div class="title">Daftar Pengguna</div>
+        <div id="userList" class="table"></div>
+      </div>
+    </section>
+
+ <!-- Pengumuman -->
+<section id="announce" class="tab">
+  <div class="grid">
+    <div class="card">
+      <div class="title">Kirim Pengumuman</div>
+      <div class="form-grid">
+        <textarea id="announcement" class="input full" placeholder="Tulis pengumuman..."></textarea>
+        <input id="annImageUrl" class="input" placeholder="Image URL (opsional)" />
+        <input id="annFile" class="input" type="file" accept="image/*" />
+        <input id="annExpire" class="input" type="datetime-local" />
+        <label class="subtitle" style="display:flex;align-items:center;gap:8px">
+          <input type="checkbox" id="annPopup" checked /> Tampilkan sebagai popup
+        </label>
+        <button id="sendAnnouncement" class="btn btn-primary full" type="button">Kirim</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="title">Daftar Pengumuman</div>
+      <div id="announcementList" class="table"></div>
+    </div>
+  </div>
+</section>
+
+
+  </main>
+
+  <script type="module" src="./js/admin.js"></script>
+</body>
+</html>

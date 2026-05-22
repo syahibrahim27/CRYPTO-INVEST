@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Withdraw</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    body {
+      background: radial-gradient(1200px 600px at 10% 0%, rgba(32,227,178,.18), transparent),
+                  radial-gradient(900px 500px at 90% 10%, rgba(124,58,237,.22), transparent),
+                  #0c1119;
+      color: #dfe7f3;
+      font-family: 'Inter', sans-serif;
+    }
+    .container {
+      max-width: 480px;
+      margin: 40px auto;
+      background: rgba(16,22,33,0.8);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      padding: 24px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+    .title { font-size: 22px; font-weight: 800; margin-bottom: 20px; }
+    .input { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #333;
+             background: #0f1621; color: #fff; font-size: 16px; margin-bottom: 12px; }
+    .btn { width: 100%; padding: 12px; border-radius: 12px; border: none;
+           background: linear-gradient(90deg, #3dd5c1, #7c3aed);
+           color: #0a1018; font-weight: 800; cursor: pointer; font-size: 16px; }
+    .btn:hover { filter: brightness(1.1); }
+    .info { color: #9fb1c7; font-size: 14px; margin-top: 6px; }
+    .subtitle { color: #9fb1c7; margin-top: 10px; }
+    .navbar {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background: rgba(12,16,24,0.85); backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    .navbar .wrap {
+      max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: repeat(5,1fr);
+    }
+    .navbar a {
+      display: flex; flex-direction: column; align-items: center; padding: 12px 8px;
+      color: #dfe7f3; opacity: .8; text-decoration: none; font-weight: 600;
+    }
+    .navbar a.active { opacity: 1; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="title">Withdraw Saldo</div>
+
+    <input type="number" id="wdAmount" class="input" placeholder="Masukkan nominal (min 50.000)" />
+    <button class="btn" id="btnWithdraw">Kirim Permintaan Withdraw</button>
+
+    <div class="info">
+      Minimal withdraw Rp50.000<br>
+      Proses akan diperiksa admin terlebih dahulu.
+    </div>
+
+    <div id="statusBox" class="subtitle"></div>
+  </div>
+
+  <nav class="navbar">
+    <div class="wrap">
+      <a href="index.html"><span>Home</span></a>
+      <a href="shop.html"><span>Toko</span></a>
+      <a href="my-products.html"><span>Produk</span></a>
+      <a href="team.html"><span>Team</span></a>
+      <a class="active" href="account.html"><span>Akun</span></a>
+    </div>
+  </nav>
+
+  <script type="module">
+    import { API, token, headers, toRp } from './js/app.js';
+
+    const btn = document.getElementById('btnWithdraw');
+    const info = document.getElementById('statusBox');
+
+    if (!token()) location.href = 'login.html';
+
+    btn.onclick = async () => {
+      const amount = Number(document.getElementById('wdAmount').value);
+      if (isNaN(amount) || amount < 50000) {
+        info.textContent = 'Nominal minimal Rp50.000';
+        info.style.color = '#ff7878';
+        return;
+      }
+
+      info.textContent = 'Mengirim permintaan...';
+      info.style.color = '#9fb1c7';
+
+      try {
+        const r = await fetch(API + '/wallet/withdraw', {
+          method: 'POST',
+          headers: headers(),
+          body: JSON.stringify({ amount })
+        });
+        const d = await r.json();
+        if (r.ok) {
+          info.innerHTML = `✅ Permintaan withdraw sebesar <b>${toRp(amount)}</b> berhasil dikirim.<br>
+            Admin akan memverifikasi transaksi.`;
+          info.style.color = '#3dd5c1';
+        } else {
+          info.textContent = d.message || 'Gagal mengirim permintaan.';
+          info.style.color = '#ff7878';
+        }
+      } catch (e) {
+        info.textContent = 'Tidak dapat terhubung ke server.';
+        info.style.color = '#ff7878';
+      }
+    };
+  </script>
+</body>
+</html>

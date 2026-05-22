@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Riwayat Transaksi</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    .history-list{display:flex;flex-direction:column;gap:8px}
+    .history-item{background:#10151d;border-radius:10px;padding:10px}
+    .type{font-weight:bold}
+    .amount{float:right}
+    .time{font-size:12px;color:#889}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="brand">Riwayat Transaksi</div>
+    </header>
+    <section class="history-list" id="historyList"></section>
+  </div>
+
+  <nav class="navbar">
+    <div class="wrap">
+      <a href="index.html"><span>Home</span></a>
+      <a href="shop.html"><span>Toko</span></a>
+      <a href="my-products.html"><span>Produk</span></a>
+      <a href="team.html"><span>Team</span></a>
+      <a class="active" href="account.html"><span>Akun</span></a>
+    </div>
+  </nav>
+
+  <script type="module">
+    import { API, headers, token, toRp } from './js/app.js';
+    if (!token()) location.href = 'login.html';
+
+    async function loadHistory() {
+      const c = document.getElementById('historyList');
+      const r = await fetch(API + '/history/me', { headers: headers() });
+      const list = await r.json();
+      if (!list.length) return c.innerHTML = '<div class="subtitle">Belum ada transaksi.</div>';
+      c.innerHTML = list.map(h => `
+        <div class="history-item">
+          <div><span class="type">${h.type.replace(/_/g, ' ').toUpperCase()}</span>
+          <span class="amount">${h.amount > 0 ? '+' : ''}${toRp(h.amount)}</span></div>
+          <div class="subtitle">${h.description || '-'}</div>
+          <div class="time">${new Date(h.createdAt).toLocaleString('id-ID')}</div>
+        </div>
+      `).join('');
+    }
+
+    loadHistory();
+  </script>
+</body>
+</html>
