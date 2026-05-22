@@ -1,6 +1,6 @@
 // frontend/admin/js/admin.js
 // ====== Konfigurasi ======
-const API = import.meta.env.VITE_API_URL;
+const API = 'https://crypto-invest-production.up.railway.app/api';;
 const token = localStorage.getItem('token');
 if (!token) location.href = '../login.html';
 

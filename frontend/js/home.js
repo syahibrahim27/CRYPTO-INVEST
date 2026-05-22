@@ -1,5 +1,5 @@
 // frontend/js/home.js
-const API = import.meta.env.VITE_API_URL;
+const API = 'https://crypto-invest-production.up.railway.app/api';
 const token = localStorage.getItem('token');
 const headers = token ? { Authorization: 'Bearer ' + token } : {};
 
