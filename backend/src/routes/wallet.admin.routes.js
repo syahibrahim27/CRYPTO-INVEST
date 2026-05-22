@@ -5,7 +5,7 @@ import { adminOnly } from '../middleware/roles.js';
 import Deposit from '../models/Deposit.js';
 import Withdraw from '../models/Withdraw.js';
 import User from '../models/User.js';
-import BalanceLog from '../models/Balancelog.js';
+import BalanceLog from '../models/BalanceLog.js';
 import History from '../models/History.js';
 
 const router = Router();
