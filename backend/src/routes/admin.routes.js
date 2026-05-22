@@ -3,7 +3,7 @@ import { Router } from 'express';
 import { authMiddleware } from '../middleware/auth.js';
 import { adminOnly } from '../middleware/roles.js';
 import User from '../models/User.js';
-import BalanceLog from '../models/Balancelog.js';
+import BalanceLog from '../models/BalanceLog.js';
 import Announcement from '../models/Announcement.js';
 import History from '../models/History.js';
 
