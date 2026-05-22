@@ -1,6 +1,6 @@
 // frontend/admin/js/admin.js
 // ====== Konfigurasi ======
-const API = 'http://localhost:5000/api';
+const API = import.meta.env.VITE_API_URL;
 const token = localStorage.getItem('token');
 if (!token) location.href = '../login.html';
 

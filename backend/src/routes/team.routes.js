@@ -11,7 +11,9 @@ router.get('/me', authMiddleware, async (req, res) => {
   if (!me) return res.status(404).json({ message: 'User not found' });
 
   const code = await ensureReferralCode(me);
-  const base = process.env.FRONTEND_BASE || 'http://localhost:5500/frontend';
+  const base =
+  process.env.FRONTEND_BASE ||
+  'https://crypto-invest-two.vercel.app/';
   const referralLink = `${base}/register.html?ref=${code}`;
 
   const levels = await getTeamLevels(me);
